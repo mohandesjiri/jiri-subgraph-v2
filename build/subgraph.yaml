@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: Masterboard
@@ -21,7 +21,7 @@ dataSources:
         - Transfer
       abis:
         - name: Masterboard
-          file: ./abis/Masterboard.json
+          file: Masterboard/abis/Masterboard.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
@@ -33,4 +33,4 @@ dataSources:
           handler: handleMutualFundCreated
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/mapping.ts
+      file: Masterboard/Masterboard.wasm
