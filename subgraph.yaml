@@ -1,0 +1,35 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Masterboard
+    network: kovan
+    source:
+      address: "0x47481fCF9Eb4173eB48dAAcDc2139E72c8f59EAb"
+      abi: Masterboard
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - CompetitionCreated
+        - IndexFundCreated
+        - MutualFundCreated
+        - Transfer
+      abis:
+        - name: Masterboard
+          file: ./abis/Masterboard.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: CompetitionCreated(uint256,address,string,address)
+          handler: handleCompetitionCreated
+        - event: IndexFundCreated(uint256,address,string,address)
+          handler: handleIndexFundCreated
+        - event: MutualFundCreated(uint256,address,string,address)
+          handler: handleMutualFundCreated
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
