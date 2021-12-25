@@ -10,4 +10,5 @@ type IndexFund @entity {
   id: ID!
   symbol: String!
   address: Bytes!
+  name: String!
 }

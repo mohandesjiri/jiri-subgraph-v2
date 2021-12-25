@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import {Address, BigInt} from "@graphprotocol/graph-ts"
 import {
   Masterboard,
   Approval,
@@ -79,7 +79,7 @@ export function handleIndexFundCreated(event: IndexFundCreated): void {
   }
   entity.address = event.params.deployedAddress
   entity.symbol = event.params.symbol
-  let contract = IndexFundContact.bind(entity.address)
+  let contract = IndexFundContact.bind(event.params.deployedAddress)
   entity.name = contract.name()
   entity.save()
 }
