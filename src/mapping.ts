@@ -7,7 +7,12 @@ import {
   MutualFundCreated,
   Transfer
 } from "../generated/Masterboard/Masterboard"
-import { ExampleEntity } from "../generated/schema"
+
+import {
+  IndexFund as IndexFundContact
+} from "../generated/Masterboard/IndexFund"
+
+import { ExampleEntity, IndexFund } from "../generated/schema"
 
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -24,6 +29,7 @@ export function handleApproval(event: Approval): void {
   }
 
   // BigInt and BigDecimal math are supported
+  // @ts-ignore
   entity.count = entity.count + BigInt.fromI32(1)
 
   // Entity fields can be set based on event parameters
@@ -66,7 +72,17 @@ export function handleApproval(event: Approval): void {
 
 export function handleCompetitionCreated(event: CompetitionCreated): void {}
 
-export function handleIndexFundCreated(event: IndexFundCreated): void {}
+export function handleIndexFundCreated(event: IndexFundCreated): void {
+  let entity = IndexFund.load(event.transaction.from.toHex())
+  if (!entity) {
+    entity = new IndexFund(event.transaction.from.toHex())
+  }
+  entity.address = event.params.deployedAddress
+  entity.symbol = event.params.symbol
+  let contract = IndexFundContact.bind(entity.address)
+  entity.name = contract.name()
+  entity.save()
+}
 
 export function handleMutualFundCreated(event: MutualFundCreated): void {}
 
