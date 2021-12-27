@@ -74,6 +74,15 @@ export class IndexFund extends Entity {
     this.set("name", Value.fromString(value));
   }
 
+  get state(): i32 {
+    let value = this.get("state");
+    return value!.toI32();
+  }
+
+  set state(value: i32) {
+    this.set("state", Value.fromI32(value));
+  }
+
   get portfolio(): Array<string> {
     let value = this.get("portfolio");
     return value!.toStringArray();

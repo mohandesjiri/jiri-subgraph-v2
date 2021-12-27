@@ -48,6 +48,8 @@ dataSources:
       abis:
         - name: IndexFund
           file: IndexFund/abis/IndexFund.json
+        - name: ERC20
+          file: IndexFund/abis/ERC20.json
       eventHandlers:
         - event: BalancedInvested(address,uint256,uint256)
           handler: handleBalancedInvested

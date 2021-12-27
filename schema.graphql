@@ -5,6 +5,7 @@ type IndexFund @entity {
   symbol: String!
   address: Bytes!
   name: String!
+  state: Int!
   portfolio: [IndexFundAsset!]! @derivedFrom(field: "indexFund")
 }
 

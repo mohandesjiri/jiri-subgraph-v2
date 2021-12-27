@@ -26,6 +26,7 @@ export function handleIndexFundCreated(event: IndexFundCreated): void {
 	entity.symbol = event.params.symbol
 	let contract = IndexFundContact.bind(event.params.deployedAddress)
 	entity.name = contract.name()
+	entity.state = contract.state()
 	updateIndexFundPortfolio(event.params.deployedAddress)
 	entity.save()
 }
