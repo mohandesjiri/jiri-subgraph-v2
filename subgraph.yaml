@@ -18,6 +18,8 @@ dataSources:
         - IndexFundCreated
         - MutualFundCreated
       abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
         - name: Masterboard
           file: ./abis/Masterboard.json
         - name: IndexFund
@@ -46,10 +48,10 @@ dataSources:
         - Invested
         - Redeemed
       abis:
-        - name: IndexFund
-          file: ./abis/IndexFund.json
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: IndexFund
+          file: ./abis/IndexFund.json
       eventHandlers:
         - event: BalancedInvested(address,uint256,uint256)
           handler: handleBalancedInvested
