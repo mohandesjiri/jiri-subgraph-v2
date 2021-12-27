@@ -11,7 +11,7 @@ import {
 } from "../../generated/Masterboard/IndexFund"
 
 import { IndexFund, IndexFundAsset } from "../../generated/schema"
-import {getIndexFundAssetId, getIndexFundId, updateIndexFundPortfolio} from "../helpers/indexFunds";
+import {getIndexFundAssetId, getIndexFundId, updateIndexFundInfo} from "../helpers/indexFunds";
 
 export function handleCompetitionCreated(event: CompetitionCreated): void {}
 
@@ -26,8 +26,7 @@ export function handleIndexFundCreated(event: IndexFundCreated): void {
 	entity.symbol = event.params.symbol
 	let contract = IndexFundContact.bind(event.params.deployedAddress)
 	entity.name = contract.name()
-	entity.state = contract.state()
-	updateIndexFundPortfolio(event.params.deployedAddress)
+	updateIndexFundInfo(event.params.deployedAddress, entity)
 	entity.save()
 }
 

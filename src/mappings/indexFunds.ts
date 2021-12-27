@@ -7,7 +7,7 @@ import {
 } from '../../generated/IndexFund/IndexFund'
 
 import { IndexFund } from "../../generated/schema"
-import {getIndexFundId, updateIndexFundPortfolio} from "../helpers/indexFunds";
+import {getIndexFundId, updateIndexFundInfo} from "../helpers/indexFunds";
 
 
 export function handleBalancedInvested(event: BalancedInvested): void {
@@ -23,7 +23,7 @@ export function handleBalancedInvested(event: BalancedInvested): void {
 			log.warning('ignored handle balanced invest for event which did not associate by any existence index fund', [])
 			return
 		}
-		updateIndexFundPortfolio(to)
+		updateIndexFundInfo(to, indexFundEntity)
 	}
 }
 
@@ -40,7 +40,7 @@ export function handleBalancedRedeemed(event: BalancedRedeemed): void {
 			log.warning('ignored handle balanced redeem for event which did not associate by any existence index fund', [])
 			return
 		}
-		updateIndexFundPortfolio(to)
+		updateIndexFundInfo(to, indexFundEntity)
 	}
 }
 
@@ -57,7 +57,7 @@ export function handleInvested(event: Invested): void {
 			log.warning('ignored handle unbalanced invest for event which did not associate by any existence index fund', [])
 			return
 		}
-		updateIndexFundPortfolio(to)
+		updateIndexFundInfo(to, indexFundEntity)
 	}
 }
 
@@ -74,6 +74,6 @@ export function handleRedeemed(event: Redeemed): void {
 			log.warning('ignored handle unbalanced redeem for event which did not associate by any existence index fund', [])
 			return
 		}
-		updateIndexFundPortfolio(to)
+		updateIndexFundInfo(to, indexFundEntity)
 	}
 }

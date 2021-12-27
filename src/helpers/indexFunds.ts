@@ -6,7 +6,7 @@ import {
 import {
 	ERC20
 } from '../../generated/IndexFund/ERC20'
-import {IndexFundAsset} from "../../generated/schema";
+import {IndexFundAsset, IndexFund} from "../../generated/schema";
 
 export function getIndexFundAssetId(indexFundId: string, assetAddress: Address ) : string {
 	return indexFundId.concat('-').concat(assetAddress.toHexString())
@@ -16,9 +16,12 @@ export function getIndexFundId(contractAddress: Address) : string {
 	return contractAddress.toHexString()
 }
 
-export function updateIndexFundPortfolio(contractAddress: Address) : void {
+export function updateIndexFundInfo(contractAddress: Address, indexFundEntity: IndexFund ) : void {
 	const contract = IndexFundContact.bind(contractAddress)
 	const indexFundId = getIndexFundId(contractAddress)
+	//update totalSupply
+	indexFundEntity.totalSupply = contract.totalSupply()
+	indexFundEntity.state = contract.state()
 	let distributions: Array<IndexFundDistribution> = contract.getDistributions()
 	for(let i : i32 = 0; i<distributions.length; i++) {
 		let distribution = distributions[i]
@@ -33,4 +36,5 @@ export function updateIndexFundPortfolio(contractAddress: Address) : void {
 		asset.amount = tokenContract.balanceOf(contractAddress)
 		asset.save()
 	}
+	indexFundEntity.save()
 }

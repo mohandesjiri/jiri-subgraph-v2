@@ -7,6 +7,7 @@ type IndexFund @entity {
   name: String!
   state: Int!
   portfolio: [IndexFundAsset!]! @derivedFrom(field: "indexFund")
+  totalSupply: BigInt!
 }
 
 type IndexFundAsset @entity {
