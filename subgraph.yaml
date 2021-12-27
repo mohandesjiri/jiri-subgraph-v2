@@ -31,30 +31,30 @@ dataSources:
           handler: handleMutualFundCreated
       file: ./src/mappings/masterBoard.ts
   - kind: ethereum
-      name: IndexFund
-      network: kovan
-      source:
-        abi: IndexFund
-        startBlock: 28796728
-      mapping:
-        kind: ethereum/events
-        apiVersion: 0.0.5
-        language: wasm/assemblyscript
-        entities:
-          - BalancedInvested
-          - BalancedRedeemed
-          - Invested
-          - Redeemed
-        abis:
-          - name: IndexFund
-            file: ./abis/IndexFund.json
-        eventHandlers:
-          - event: BalancedInvested(address,uint256,uint256)
-            handler: handleBalancedInvested
-          - event: BalancedRedeemed(address,uint256,uint256)
-            handler: handleBalancedRedeemed
-          - event: Invested(address,uint256,int256,uint256)
-            handler: handleInvested
-          - event: Redeemed(address,uint256,int256,uint256)
-            handler: handleRedeemed
-        file: ./src/mappings/indexFunds.ts
+    name: IndexFund
+    network: kovan
+    source:
+      abi: IndexFund
+      startBlock: 28796728
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - BalancedInvested
+        - BalancedRedeemed
+        - Invested
+        - Redeemed
+      abis:
+        - name: IndexFund
+          file: ./abis/IndexFund.json
+      eventHandlers:
+        - event: BalancedInvested(address,uint256,uint256)
+          handler: handleBalancedInvested
+        - event: BalancedRedeemed(address,uint256,uint256)
+          handler: handleBalancedRedeemed
+        - event: Invested(address,uint256,int256,uint256)
+          handler: handleInvested
+        - event: Redeemed(address,uint256,int256,uint256)
+          handler: handleRedeemed
+      file: ./src/mappings/indexFunds.ts
