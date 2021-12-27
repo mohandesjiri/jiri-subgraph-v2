@@ -14,25 +14,47 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Approval
         - CompetitionCreated
         - IndexFundCreated
         - MutualFundCreated
-        - Transfer
       abis:
         - name: Masterboard
           file: ./abis/Masterboard.json
         - name: IndexFund
           file: ./abis/IndexFund.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
         - event: CompetitionCreated(uint256,address,string,address)
           handler: handleCompetitionCreated
         - event: IndexFundCreated(uint256,address,string,address)
           handler: handleIndexFundCreated
         - event: MutualFundCreated(uint256,address,string,address)
           handler: handleMutualFundCreated
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer
-      file: ./src/mapping.ts
+      file: ./src/mappings/masterBoard.ts
+  - kind: ethereum
+      name: IndexFund
+      network: kovan
+      source:
+        abi: IndexFund
+        startBlock: 28796728
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.5
+        language: wasm/assemblyscript
+        entities:
+          - BalancedInvested
+          - BalancedRedeemed
+          - Invested
+          - Redeemed
+        abis:
+          - name: IndexFund
+            file: ./abis/IndexFund.json
+        eventHandlers:
+          - event: BalancedInvested(address,uint256,uint256)
+            handler: handleBalancedInvested
+          - event: BalancedRedeemed(address,uint256,uint256)
+            handler: handleBalancedRedeemed
+          - event: Invested(address,uint256,int256,uint256)
+            handler: handleInvested
+          - event: Redeemed(address,uint256,int256,uint256)
+            handler: handleRedeemed
+        file: ./src/mappings/indexFunds.ts
