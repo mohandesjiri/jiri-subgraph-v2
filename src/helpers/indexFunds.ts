@@ -28,9 +28,7 @@ export function updateIndexFundPortfolio(contractAddress: Address) : void {
 			asset = new IndexFundAsset(assetId)
 			asset.address = distribution.asset
 			asset.indexFund = indexFundId
-			asset.ideal = distribution.ideal
 		}
-		asset.current = distribution.current
 		const tokenContract = ERC20.bind(distribution.asset)
 		asset.amount = tokenContract.balanceOf(contractAddress)
 		asset.save()

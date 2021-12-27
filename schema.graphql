@@ -13,8 +13,6 @@ type IndexFundAsset @entity {
   id: ID!
   address: Bytes!
   amount: BigInt!
-  current: BigInt!
-  ideal: BigInt!
   indexFund: IndexFund!
 }
 
