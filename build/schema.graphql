@@ -12,3 +12,11 @@ type IndexFund @entity {
   address: Bytes!
   name: String!
 }
+
+type _Schema_
+@fulltext(
+  name: "fundSearch"
+  language: en
+  algorithm: rank
+  include: [{ entity: "IndexFund", fields: [{ name: "name" }, { name: "symbol" }] }]
+)

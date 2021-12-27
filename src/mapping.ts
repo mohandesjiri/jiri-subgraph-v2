@@ -9,10 +9,11 @@ import {
 } from "../generated/Masterboard/Masterboard"
 
 import {
-  IndexFund as IndexFundContact
+  IndexFund as IndexFundContact,
+  IndexFund__getDistributionsResultValue0Struct as IndexFundDistribution
 } from "../generated/Masterboard/IndexFund"
 
-import { ExampleEntity, IndexFund } from "../generated/schema"
+import { ExampleEntity, IndexFund, IndexFundAsset } from "../generated/schema"
 
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -73,14 +74,24 @@ export function handleApproval(event: Approval): void {
 export function handleCompetitionCreated(event: CompetitionCreated): void {}
 
 export function handleIndexFundCreated(event: IndexFundCreated): void {
-  let entity = IndexFund.load(event.transaction.from.toHex())
+  const indexFundId: string = event.transaction.from.toHex()
+  const IndexFundAddress: Address = event.params.deployedAddress
+  let entity = IndexFund.load(indexFundId)
   if (!entity) {
-    entity = new IndexFund(event.transaction.from.toHex())
+    entity = new IndexFund(indexFundId)
   }
-  entity.address = event.params.deployedAddress
+  entity.address = IndexFundAddress
   entity.symbol = event.params.symbol
   let contract = IndexFundContact.bind(event.params.deployedAddress)
   entity.name = contract.name()
+  let distributions: Array<IndexFundDistribution> = contract.getDistributions()
+  distributions.forEach(distribution => {
+    let asset = new IndexFundAsset(IndexFundAddress + "-" + indexFundId)
+    asset.address = distribution.asset
+    asset.indexFund = indexFundId
+    asset.ideal = distribution.ideal
+    asset.save()
+  })
   entity.save()
 }
 

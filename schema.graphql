@@ -11,4 +11,22 @@ type IndexFund @entity {
   symbol: String!
   address: Bytes!
   name: String!
+  portfolio: [IndexFundAsset!]! @derivedFrom(field: "indexFund")
 }
+
+type IndexFundAsset @entity {
+  id: ID!
+  address: Bytes!
+  amount: BigInt
+  current: BigInt
+  ideal: BigInt!
+  indexFund: IndexFund!
+}
+
+type _Schema_
+@fulltext(
+  name: "fundSearch"
+  language: en
+  algorithm: rank
+  include: [{ entity: "IndexFund", fields: [{ name: "name" }, { name: "symbol" }] }]
+)

@@ -137,4 +137,111 @@ export class IndexFund extends Entity {
   set name(value: string) {
     this.set("name", Value.fromString(value));
   }
+
+  get portfolio(): Array<string> {
+    let value = this.get("portfolio");
+    return value!.toStringArray();
+  }
+
+  set portfolio(value: Array<string>) {
+    this.set("portfolio", Value.fromStringArray(value));
+  }
+}
+
+export class IndexFundAsset extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("address", Value.fromBytes(Bytes.empty()));
+    this.set("ideal", Value.fromBigInt(BigInt.zero()));
+    this.set("indexFund", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save IndexFundAsset entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save IndexFundAsset entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("IndexFundAsset", id.toString(), this);
+    }
+  }
+
+  static load(id: string): IndexFundAsset | null {
+    return changetype<IndexFundAsset | null>(store.get("IndexFundAsset", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get amount(): BigInt | null {
+    let value = this.get("amount");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set amount(value: BigInt | null) {
+    if (!value) {
+      this.unset("amount");
+    } else {
+      this.set("amount", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get current(): BigInt | null {
+    let value = this.get("current");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set current(value: BigInt | null) {
+    if (!value) {
+      this.unset("current");
+    } else {
+      this.set("current", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get ideal(): BigInt {
+    let value = this.get("ideal");
+    return value!.toBigInt();
+  }
+
+  set ideal(value: BigInt) {
+    this.set("ideal", Value.fromBigInt(value));
+  }
+
+  get indexFund(): string {
+    let value = this.get("indexFund");
+    return value!.toString();
+  }
+
+  set indexFund(value: string) {
+    this.set("indexFund", Value.fromString(value));
+  }
 }
