@@ -1,10 +1,4 @@
 # noinspection GraphQLDuplicateDirective,GraphQLMissingType
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  spender: Bytes! # address
-}
 
 type IndexFund @entity {
   id: ID!
@@ -17,8 +11,8 @@ type IndexFund @entity {
 type IndexFundAsset @entity {
   id: ID!
   address: Bytes!
-  amount: BigInt
-  current: BigInt
+  amount: BigInt!
+  current: BigInt!
   ideal: BigInt!
   indexFund: IndexFund!
 }

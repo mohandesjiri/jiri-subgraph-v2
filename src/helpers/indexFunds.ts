@@ -3,17 +3,20 @@ import {
 	IndexFund as IndexFundContact,
 	IndexFund__getDistributionsResultValue0Struct as IndexFundDistribution
 } from "../../generated/IndexFund/IndexFund";
+import {
+	ERC20
+} from '../../generated/IndexFund/ERC20'
 import {IndexFundAsset} from "../../generated/schema";
 
-export function getIndexFundAssetId(indexFundId: string, assetAddress: Address ) {
+export function getIndexFundAssetId(indexFundId: string, assetAddress: Address ) : string {
 	return indexFundId.concat('-').concat(assetAddress.toHexString())
 }
 
-export function getIndexFundId(contractAddress: Address) {
+export function getIndexFundId(contractAddress: Address) : string {
 	return contractAddress.toHexString()
 }
 
-export function updateIndexFundPortfolio(contractAddress: Address) {
+export function updateIndexFundPortfolio(contractAddress: Address) : void {
 	const contract = IndexFundContact.bind(contractAddress)
 	const indexFundId = getIndexFundId(contractAddress)
 	let distributions: Array<IndexFundDistribution> = contract.getDistributions()
@@ -28,7 +31,8 @@ export function updateIndexFundPortfolio(contractAddress: Address) {
 			asset.ideal = distribution.ideal
 		}
 		asset.current = distribution.current
-		asset.amount = contract.balanceOf(distribution.asset)
+		const tokenContract = ERC20.bind(distribution.asset)
+		asset.amount = tokenContract.balanceOf(contractAddress)
 		asset.save()
 	}
 }

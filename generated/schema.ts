@@ -90,6 +90,8 @@ export class IndexFundAsset extends Entity {
     this.set("id", Value.fromString(id));
 
     this.set("address", Value.fromBytes(Bytes.empty()));
+    this.set("amount", Value.fromBigInt(BigInt.zero()));
+    this.set("current", Value.fromBigInt(BigInt.zero()));
     this.set("ideal", Value.fromBigInt(BigInt.zero()));
     this.set("indexFund", Value.fromString(""));
   }
@@ -129,38 +131,22 @@ export class IndexFundAsset extends Entity {
     this.set("address", Value.fromBytes(value));
   }
 
-  get amount(): BigInt | null {
+  get amount(): BigInt {
     let value = this.get("amount");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set amount(value: BigInt | null) {
-    if (!value) {
-      this.unset("amount");
-    } else {
-      this.set("amount", Value.fromBigInt(<BigInt>value));
-    }
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
   }
 
-  get current(): BigInt | null {
+  get current(): BigInt {
     let value = this.get("current");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set current(value: BigInt | null) {
-    if (!value) {
-      this.unset("current");
-    } else {
-      this.set("current", Value.fromBigInt(<BigInt>value));
-    }
+  set current(value: BigInt) {
+    this.set("current", Value.fromBigInt(value));
   }
 
   get ideal(): BigInt {
