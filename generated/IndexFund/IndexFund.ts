@@ -101,20 +101,24 @@ export class Invested__Params {
     this._event = event;
   }
 
-  get investor(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get shareAmount(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get bonus(): BigInt {
+  get investingAsset(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get investingAmount(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get nav(): BigInt {
+  get bonus(): BigInt {
     return this._event.parameters[3].value.toBigInt();
+  }
+
+  get nav(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 
@@ -131,20 +135,24 @@ export class Redeemed__Params {
     this._event = event;
   }
 
-  get investor(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get shareAmount(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get bonus(): BigInt {
+  get redeemingAsset(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get redeemingAmount(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get nav(): BigInt {
+  get bonus(): BigInt {
     return this._event.parameters[3].value.toBigInt();
+  }
+
+  get nav(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 
@@ -425,6 +433,21 @@ export class IndexFund extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  getAssets(): Array<Address> {
+    let result = super.call("getAssets", "getAssets():(address[])", []);
+
+    return result[0].toAddressArray();
+  }
+
+  try_getAssets(): ethereum.CallResult<Array<Address>> {
+    let result = super.tryCall("getAssets", "getAssets():(address[])", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddressArray());
+  }
+
   getDistributions(): Array<IndexFund__getDistributionsResultValue0Struct> {
     let result = super.call(
       "getDistributions",
@@ -595,6 +618,21 @@ export class IndexFund extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  prizePool(): BigInt {
+    let result = super.call("prizePool", "prizePool():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_prizePool(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("prizePool", "prizePool():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   state(): i32 {
@@ -925,12 +963,12 @@ export class InvestCall__Inputs {
     this._call = call;
   }
 
-  get investingAmount(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get investingAsset(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 
-  get investingAsset(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get investingAmount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
   }
 
   get maxNav(): BigInt {

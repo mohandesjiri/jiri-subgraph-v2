@@ -7,8 +7,7 @@ import {
 
 import {
 	IndexFund as IndexFundContact,
-	IndexFund__getDistributionsResultValue0Struct as IndexFundDistribution
-} from "../../generated/Masterboard/IndexFund"
+} from "../../generated/IndexFund/IndexFund"
 
 import { IndexFund, IndexFundAsset } from "../../generated/schema"
 import {getIndexFundAssetId, getIndexFundId, updateIndexFundInfo} from "../helpers/indexFunds";
@@ -26,9 +25,10 @@ export function handleIndexFundCreated(event: IndexFundCreated): void {
 	entity.symbol = event.params.symbol
 	let contract = IndexFundContact.bind(event.params.deployedAddress)
 	entity.name = contract.name()
-	updateIndexFundInfo(event.params.deployedAddress, entity)
+	entity.creator = contract.creator()
+	entity.maxSlippage = contract.maxSlippage()
+	entity.entranceFee = contract.entranceFee()
+	updateIndexFundInfo(event.params.deployedAddress, contract, entity)
 	entity.save()
 }
-
-export function handleMutualFundCreated(event: MutualFundCreated): void {}
 

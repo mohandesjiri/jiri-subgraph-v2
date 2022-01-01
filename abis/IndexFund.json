@@ -130,14 +130,20 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "shareAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "investor",
+        "name": "investingAsset",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "shareAmount",
+        "name": "investingAmount",
         "type": "uint256"
       },
       {
@@ -161,14 +167,20 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "shareAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "investor",
+        "name": "redeemingAsset",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "shareAmount",
+        "name": "redeemingAmount",
         "type": "uint256"
       },
       {
@@ -414,6 +426,19 @@
   },
   {
     "inputs": [],
+    "name": "getAssets",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getDistributions",
     "outputs": [
       {
@@ -506,14 +531,14 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "investingAmount",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "investingAsset",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "investingAmount",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -615,6 +640,19 @@
         "internalType": "contract FeedRegistryInterface",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "prizePool",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

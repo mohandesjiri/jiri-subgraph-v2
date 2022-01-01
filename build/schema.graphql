@@ -5,15 +5,51 @@ type IndexFund @entity {
   symbol: String!
   address: Bytes!
   name: String!
+  creator: Bytes!
   state: Int!
+  maxSlippage: BigInt!
+  entranceFee: BigInt!
+  prizePool: BigInt!
   portfolio: [IndexFundAsset!]! @derivedFrom(field: "indexFund")
   totalSupply: BigInt!
+  historyRecords: [HistoryRecord!]! @derivedFrom(field: "indexFund")
+  historyRecordsCount: HistoryRecordsCount! @derivedFrom(field: "indexFund")
 }
 
 type IndexFundAsset @entity {
   id: ID!
   address: Bytes!
   amount: BigInt!
+  indexFund: IndexFund!
+}
+
+enum HistoryRecordType {
+  BALANCED_INVEST
+  BALANCED_REDEEM
+  INVEST
+  REDEEM
+}
+type HistoryRecord @entity {
+  id: ID!
+  type: String!
+  timestamp: BigInt!
+  shareAmount: BigInt!
+  bonus: BigInt
+  account: Bytes!
+  assets: [HistoryRecordAsset!]! @derivedFrom(field: "historyRecord")
+  indexFund: IndexFund!
+}
+
+type HistoryRecordAsset @entity {
+  id: ID!
+  address: Bytes!
+  amount: BigInt!
+  historyRecord: HistoryRecord!
+}
+
+type HistoryRecordsCount @entity {
+  id: ID!
+  count: Int!
   indexFund: IndexFund!
 }
 

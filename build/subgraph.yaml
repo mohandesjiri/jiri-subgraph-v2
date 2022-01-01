@@ -6,9 +6,9 @@ dataSources:
     name: Masterboard
     network: kovan
     source:
-      address: "0x47481fCF9Eb4173eB48dAAcDc2139E72c8f59EAb"
+      address: "0xeEE4b8F8c1033F1572dBA80C46e501124A31eC7D"
       abi: Masterboard
-      startBlock: 28796728
+      startBlock: 29058909
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -57,8 +57,8 @@ dataSources:
           handler: handleBalancedInvested
         - event: BalancedRedeemed(address,uint256,uint256)
           handler: handleBalancedRedeemed
-        - event: Invested(address,uint256,int256,uint256)
+        - event: Invested(uint256,address,uint256,int256,uint256)
           handler: handleInvested
-        - event: Redeemed(address,uint256,int256,uint256)
+        - event: Redeemed(uint256,address,uint256,int256,uint256)
           handler: handleRedeemed
       file: IndexFund/IndexFund.wasm
