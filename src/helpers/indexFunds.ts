@@ -15,11 +15,11 @@ import {
 } from "../../generated/schema";
 
 export function getIndexFundAssetId(indexFundId: string, assetAddress: Address ) : string {
-	return indexFundId.concat('-').concat(assetAddress.toHexString())
+	return indexFundId.concat('-').concat(assetAddress.toHexString().toLowerCase())
 }
 
 export function getIndexFundId(contractAddress: Address) : string {
-	return contractAddress.toHexString()
+	return contractAddress.toHexString().toLowerCase()
 }
 
 export function updateIndexFundInfo(contractAddress: Address, contract: IndexFundContact, indexFundEntity: IndexFund ) : void {

@@ -32,6 +32,7 @@ export function handleBalancedInvested(event: BalancedInvested): void {
 		}
 		const historyRecordEntity = createHistoryRecordEntity(event, 'BALANCED_INVEST', indexFundId)
 		historyRecordEntity.shareAmount = event.params.shareAmount
+		historyRecordEntity.nav = event.params.nav
 		// Add history record assets
 		const contract = IndexFundContact.bind(to)
 		const assets = contract.getAssets()
@@ -64,6 +65,7 @@ export function handleBalancedRedeemed(event: BalancedRedeemed): void {
 		}
 		const historyRecordEntity = createHistoryRecordEntity(event, 'BALANCED_REDEEM', indexFundId)
 		historyRecordEntity.shareAmount = event.params.shareAmount
+		historyRecordEntity.nav = event.params.nav
 		// Add history record assets
 		const contract = IndexFundContact.bind(to)
 		const assets = contract.getAssets()
@@ -96,6 +98,7 @@ export function handleInvested(event: Invested): void {
 		}
 		const historyRecordEntity = createHistoryRecordEntity(event, 'INVEST', indexFundId)
 		historyRecordEntity.shareAmount = event.params.shareAmount
+		historyRecordEntity.nav = event.params.nav
 		historyRecordEntity.bonus = event.params.bonus
 		const contract = IndexFundContact.bind(to)
 		const historyRecordAssetEntity = createHistoryARecordAsset(historyRecordEntity.id, event.params.investingAsset, event.params.investingAmount)
@@ -121,6 +124,7 @@ export function handleRedeemed(event: Redeemed): void {
 		}
 		const historyRecordEntity = createHistoryRecordEntity(event, 'REDEEM', indexFundId)
 		historyRecordEntity.shareAmount = event.params.shareAmount
+		historyRecordEntity.nav = event.params.nav
 		historyRecordEntity.bonus = event.params.bonus
 		const contract = IndexFundContact.bind(to)
 		const historyRecordAssetEntity = createHistoryARecordAsset(historyRecordEntity.id, event.params.redeemingAsset, event.params.redeemingAmount)

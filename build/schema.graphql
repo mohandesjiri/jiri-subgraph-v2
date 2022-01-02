@@ -2,6 +2,7 @@
 
 type IndexFund @entity {
   id: ID!
+  decimals: Int!
   symbol: String!
   address: Bytes!
   name: String!
@@ -36,6 +37,7 @@ type HistoryRecord @entity {
   shareAmount: BigInt!
   bonus: BigInt
   account: Bytes!
+  nav: BigInt!
   assets: [HistoryRecordAsset!]! @derivedFrom(field: "historyRecord")
   indexFund: IndexFund!
 }

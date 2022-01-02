@@ -52,6 +52,15 @@ export class IndexFund extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get decimals(): i32 {
+    let value = this.get("decimals");
+    return value!.toI32();
+  }
+
+  set decimals(value: i32) {
+    this.set("decimals", Value.fromI32(value));
+  }
+
   get symbol(): string {
     let value = this.get("symbol");
     return value!.toString();
@@ -234,6 +243,7 @@ export class HistoryRecord extends Entity {
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
     this.set("shareAmount", Value.fromBigInt(BigInt.zero()));
     this.set("account", Value.fromBytes(Bytes.empty()));
+    this.set("nav", Value.fromBigInt(BigInt.zero()));
     this.set("indexFund", Value.fromString(""));
   }
 
@@ -314,6 +324,15 @@ export class HistoryRecord extends Entity {
 
   set account(value: Bytes) {
     this.set("account", Value.fromBytes(value));
+  }
+
+  get nav(): BigInt {
+    let value = this.get("nav");
+    return value!.toBigInt();
+  }
+
+  set nav(value: BigInt) {
+    this.set("nav", Value.fromBigInt(value));
   }
 
   get assets(): Array<string> {
