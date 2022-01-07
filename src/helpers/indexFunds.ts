@@ -18,6 +18,9 @@ export function getIndexFundAssetId(indexFundId: string, assetAddress: Address )
 	return indexFundId.concat('-').concat(assetAddress.toHexString().toLowerCase())
 }
 
+export function getIndexFundInitialId(indexFundId: string, assetAddress: Address ) : string {
+	return ('IFI-').concat(indexFundId).concat('-').concat(assetAddress.toHexString().toLowerCase())
+}
 export function getIndexFundId(contractAddress: Address) : string {
 	return contractAddress.toHexString().toLowerCase()
 }

@@ -134,6 +134,15 @@ export class IndexFund extends Entity {
     this.set("prizePool", Value.fromBigInt(value));
   }
 
+  get initials(): Array<string> {
+    let value = this.get("initials");
+    return value!.toStringArray();
+  }
+
+  set initials(value: Array<string>) {
+    this.set("initials", Value.fromStringArray(value));
+  }
+
   get portfolio(): Array<string> {
     let value = this.get("portfolio");
     return value!.toStringArray();
@@ -177,6 +186,72 @@ export class IndexFund extends Entity {
 
   set historyRecordsCount(value: string) {
     this.set("historyRecordsCount", Value.fromString(value));
+  }
+}
+
+export class IndexFundInitial extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("address", Value.fromBytes(Bytes.empty()));
+    this.set("portion", Value.fromBigInt(BigInt.zero()));
+    this.set("indexFund", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save IndexFundInitial entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save IndexFundInitial entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("IndexFundInitial", id.toString(), this);
+    }
+  }
+
+  static load(id: string): IndexFundInitial | null {
+    return changetype<IndexFundInitial | null>(
+      store.get("IndexFundInitial", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get address(): Bytes {
+    let value = this.get("address");
+    return value!.toBytes();
+  }
+
+  set address(value: Bytes) {
+    this.set("address", Value.fromBytes(value));
+  }
+
+  get portion(): BigInt {
+    let value = this.get("portion");
+    return value!.toBigInt();
+  }
+
+  set portion(value: BigInt) {
+    this.set("portion", Value.fromBigInt(value));
+  }
+
+  get indexFund(): string {
+    let value = this.get("indexFund");
+    return value!.toString();
+  }
+
+  set indexFund(value: string) {
+    this.set("indexFund", Value.fromString(value));
   }
 }
 

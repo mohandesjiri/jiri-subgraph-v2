@@ -11,11 +11,19 @@ type IndexFund @entity {
   maxSlippage: BigInt!
   entranceFee: BigInt!
   prizePool: BigInt!
+  initials: [IndexFundInitial!]! @derivedFrom(field: "indexFund")
   portfolio: [IndexFundAsset!]! @derivedFrom(field: "indexFund")
   totalSupply: BigInt!
   timestamp: BigInt!
   historyRecords: [HistoryRecord!]! @derivedFrom(field: "indexFund")
   historyRecordsCount: HistoryRecordsCount! @derivedFrom(field: "indexFund")
+}
+
+type IndexFundInitial @entity {
+  id: ID!
+  address: Bytes!
+  portion: BigInt!
+  indexFund: IndexFund!
 }
 
 type IndexFundAsset @entity {
