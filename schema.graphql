@@ -13,6 +13,7 @@ type IndexFund @entity {
   prizePool: BigInt!
   portfolio: [IndexFundAsset!]! @derivedFrom(field: "indexFund")
   totalSupply: BigInt!
+  timestamp: BigInt!
   historyRecords: [HistoryRecord!]! @derivedFrom(field: "indexFund")
   historyRecordsCount: HistoryRecordsCount! @derivedFrom(field: "indexFund")
 }

@@ -29,6 +29,7 @@ export function handleIndexFundCreated(event: IndexFundCreated): void {
 	entity.maxSlippage = contract.maxSlippage()
 	entity.entranceFee = contract.entranceFee()
 	entity.decimals = contract.decimals()
+	entity.timestamp = event.block.timestamp
 	updateIndexFundInfo(event.params.deployedAddress, contract, entity)
 	entity.save()
 }
