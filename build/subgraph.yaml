@@ -6,9 +6,9 @@ dataSources:
     name: Masterboard
     network: kovan
     source:
-      address: "0xeEE4b8F8c1033F1572dBA80C46e501124A31eC7D"
+      address: "0x40ADEC16a1e8866b7Dfc988248d90ca969f9419e"
       abi: Masterboard
-      startBlock: 29058909
+      startBlock: 29147018
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

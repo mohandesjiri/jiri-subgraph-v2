@@ -227,6 +227,15 @@ export class IndexFundInitial extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get index(): i32 {
+    let value = this.get("index");
+    return value!.toI32();
+  }
+
+  set index(value: i32) {
+    this.set("index", Value.fromI32(value));
+  }
+
   get address(): Bytes {
     let value = this.get("address");
     return value!.toBytes();
@@ -289,6 +298,15 @@ export class IndexFundAsset extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get index(): i32 {
+    let value = this.get("index");
+    return value!.toI32();
+  }
+
+  set index(value: i32) {
+    this.set("index", Value.fromI32(value));
   }
 
   get address(): Bytes {

@@ -50,6 +50,7 @@ export function handleIndexFundCreated(event: IndexFundCreated): void {
 		const portion : BigInt = initial.value0
 		const initialEntity = new IndexFundInitial(getIndexFundInitialId(indexFundId, asset))
 		initialEntity.indexFund = indexFundId
+		initialEntity.index = i
 		initialEntity.address = asset
 		initialEntity.portion = portion
 		initialEntity.save()

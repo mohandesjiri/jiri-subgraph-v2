@@ -21,6 +21,7 @@ type IndexFund @entity {
 
 type IndexFundInitial @entity {
   id: ID!
+  index: Int!
   address: Bytes!
   portion: BigInt!
   indexFund: IndexFund!
@@ -28,6 +29,7 @@ type IndexFundInitial @entity {
 
 type IndexFundAsset @entity {
   id: ID!
+  index: Int!
   address: Bytes!
   amount: BigInt!
   indexFund: IndexFund!

@@ -1,4 +1,4 @@
-import {Address, BigInt, ethereum} from "@graphprotocol/graph-ts"
+import {Address, BigInt, ethereum, log} from "@graphprotocol/graph-ts"
 import {
 	IndexFund as IndexFundContact,
 	IndexFund__getDistributionsResultValue0Struct as IndexFundDistribution
@@ -38,8 +38,12 @@ export function updateIndexFundInfo(contractAddress: Address, contract: IndexFun
 		let indexFundAssetEntity = IndexFundAsset.load(assetId)
 		if(!indexFundAssetEntity) {
 			indexFundAssetEntity = new IndexFundAsset(assetId)
+			indexFundAssetEntity.index = i
 			indexFundAssetEntity.address = asset
 			indexFundAssetEntity.indexFund = indexFundId
+		} else if(indexFundAssetEntity.index !== i) {
+			indexFundAssetEntity.index = i;
+			log.warning('Found corruption in index fund assets order... $indexFund', [indexFundId])
 		}
 		const tokenContract = ERC20.bind(asset)
 		indexFundAssetEntity.amount = tokenContract.balanceOf(contractAddress)
