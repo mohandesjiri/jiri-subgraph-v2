@@ -17,6 +17,7 @@ type IndexFund @entity {
   timestamp: BigInt!
   historyRecords: [HistoryRecord!]! @derivedFrom(field: "indexFund")
   historyRecordsCount: HistoryRecordsCount! @derivedFrom(field: "indexFund")
+  investors: [InvestorIndexFund!] @derivedFrom(field: "indexFund")
 }
 
 type IndexFundInitial @entity {
@@ -63,6 +64,19 @@ type HistoryRecordAsset @entity {
 type HistoryRecordsCount @entity {
   id: ID!
   count: Int!
+  indexFund: IndexFund!
+}
+
+type Investor @entity {
+  id: ID!
+  address: Bytes!
+  indexFunds: [InvestorIndexFund!] @derivedFrom(field: "investor")
+}
+
+type InvestorIndexFund @entity {
+  id: ID!
+  balance: BigInt!
+  investor: Investor!
   indexFund: IndexFund!
 }
 

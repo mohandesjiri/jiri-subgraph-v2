@@ -1,6 +1,6 @@
 import {Address, BigInt, ethereum, log} from "@graphprotocol/graph-ts"
 import {
-	IndexFund as IndexFundContact,
+	IndexFund as IndexFundContract,
 	IndexFund__getDistributionsResultValue0Struct as IndexFundDistribution
 } from "../../generated/IndexFund/IndexFund";
 import {
@@ -11,7 +11,7 @@ import {
 	IndexFund,
 	HistoryRecord,
 	HistoryRecordAsset,
-	HistoryRecordsCount
+	HistoryRecordsCount, InvestorIndexFund, Investor
 } from "../../generated/schema";
 
 export function getIndexFundAssetId(indexFundId: string, assetAddress: Address ) : string {
@@ -25,7 +25,14 @@ export function getIndexFundId(contractAddress: Address) : string {
 	return contractAddress.toHexString().toLowerCase()
 }
 
-export function updateIndexFundInfo(contractAddress: Address, contract: IndexFundContact, indexFundEntity: IndexFund ) : void {
+export function getInvestorId(investorAddress: Address): string {
+	return investorAddress.toHexString()
+}
+
+export function getInvestorFundBalanceId(investorAddress: Address, fundAddress: Address) : string {
+	return ('UFB-').concat(investorAddress.toHexString()).concat('-').concat(fundAddress.toHexString().toLowerCase())
+}
+export function updateIndexFundInfo(contractAddress: Address, contract: IndexFundContract, indexFundEntity: IndexFund ) : void {
 	const indexFundId = getIndexFundId(contractAddress)
 	//update totalSupply
 	indexFundEntity.totalSupply = contract.totalSupply()
@@ -93,6 +100,31 @@ export function increaseHistoryRecordsCount(contractAddress: Address): void {
 	entity.save()
 }
 
-export function updateIndexFundHistoryInBalancedEvents(): void {
+export function updateInvestorIndexFundBalance(investorAddress: Address, indexFundAddress: Address, indexFundContract: IndexFundContract ) : void {
+	//Ignore transferFrom
+	if(indexFundAddress.toHexString() === investorAddress.toHexString()) {
+		return
+	}
 
+	if(investorAddress.toHexString() === Address.zero().toHexString() ) {
+		return
+	}
+
+	log.warning('indexFund address: $indexFundAddress -- investor address: $investorAddress -- address zero: $addressZero', [indexFundAddress.toHexString(), investorAddress.toHexString(), Address.zero().toHexString()])
+	const investorIndexFundBalanceId = getInvestorFundBalanceId(investorAddress, indexFundAddress)
+	let investorIndexFundBalanceEntity = InvestorIndexFund.load(investorIndexFundBalanceId)
+	if(!investorIndexFundBalanceEntity) {
+		investorIndexFundBalanceEntity = new InvestorIndexFund(investorIndexFundBalanceId)
+		const investorId: string = getInvestorId(investorAddress)
+		let investorEntity = Investor.load(investorId)
+		if (!investorEntity) {
+			investorEntity = new Investor(investorId)
+			investorEntity.address = investorAddress
+			investorEntity.save()
+		}
+		investorIndexFundBalanceEntity.investor = investorId
+		investorIndexFundBalanceEntity.indexFund = getIndexFundId(indexFundAddress)
+	}
+	investorIndexFundBalanceEntity.balance = indexFundContract.balanceOf(investorAddress)
+	investorIndexFundBalanceEntity.save()
 }

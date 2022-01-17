@@ -4,15 +4,16 @@ import {
 	BalancedRedeemed,
 	Invested,
 	Redeemed,
-	IndexFund as IndexFundContact,
+	IndexFund as IndexFundContract, Transfer,
 } from '../../generated/IndexFund/IndexFund'
 
 import {HistoryRecord, HistoryRecordAsset, IndexFund,  } from "../../generated/schema"
 import {
+	updateInvestorIndexFundBalance,
 	createHistoryARecordAsset,
 	createHistoryRecordEntity, getHistoryARecordAssetId,
 	getHistoryRecordId,
-	getIndexFundId, increaseHistoryRecordsCount,
+	getIndexFundId, getInvestorId, increaseHistoryRecordsCount,
 	updateIndexFundInfo
 } from "../helpers/indexFunds";
 
@@ -34,7 +35,7 @@ export function handleBalancedInvested(event: BalancedInvested): void {
 		historyRecordEntity.shareAmount = event.params.shareAmount
 		historyRecordEntity.nav = event.params.nav
 		// Add history record assets
-		const contract = IndexFundContact.bind(to)
+		const contract = IndexFundContract.bind(to)
 		const assets = contract.getAssets()
 		const investingAmount : BigInt = event.params.nav.times(event.params.shareAmount)
 		for(let i: i32 = 0 ; i < assets.length ; i++) {
@@ -67,7 +68,7 @@ export function handleBalancedRedeemed(event: BalancedRedeemed): void {
 		historyRecordEntity.shareAmount = event.params.shareAmount
 		historyRecordEntity.nav = event.params.nav
 		// Add history record assets
-		const contract = IndexFundContact.bind(to)
+		const contract = IndexFundContract.bind(to)
 		const assets = contract.getAssets()
 		const investingAmount : BigInt = event.params.nav.times(event.params.shareAmount)
 		for(let i : i32 = 0 ; i < assets.length ; i++) {
@@ -100,7 +101,7 @@ export function handleInvested(event: Invested): void {
 		historyRecordEntity.shareAmount = event.params.shareAmount
 		historyRecordEntity.nav = event.params.nav
 		historyRecordEntity.bonus = event.params.bonus
-		const contract = IndexFundContact.bind(to)
+		const contract = IndexFundContract.bind(to)
 		const historyRecordAssetEntity = createHistoryARecordAsset(historyRecordEntity.id, event.params.investingAsset, event.params.investingAmount)
 		historyRecordAssetEntity.save()
 		historyRecordEntity.save()
@@ -126,11 +127,40 @@ export function handleRedeemed(event: Redeemed): void {
 		historyRecordEntity.shareAmount = event.params.shareAmount
 		historyRecordEntity.nav = event.params.nav
 		historyRecordEntity.bonus = event.params.bonus
-		const contract = IndexFundContact.bind(to)
+		const contract = IndexFundContract.bind(to)
 		const historyRecordAssetEntity = createHistoryARecordAsset(historyRecordEntity.id, event.params.redeemingAsset, event.params.redeemingAmount)
 		historyRecordAssetEntity.save()
 		historyRecordEntity.save()
 		increaseHistoryRecordsCount(to)
 		updateIndexFundInfo(to, contract, indexFundEntity)
 	}
+}
+
+export function handleTransfer(event: Transfer) : void {
+	const indexFundAddress: Address | null = event.transaction.to
+	if(!indexFundAddress) {
+		//log.warning('Ignore transfer event without transaction.to association!', [])
+		return
+	}
+	const indexFundId: string = getIndexFundId(indexFundAddress)
+	const indexFundEntity = IndexFund.load(indexFundId)
+	if(!indexFundEntity) {
+		//log.warning('Ignore transfer event without index fund entity association!', [])
+		return
+	}
+	const indexFundContract = IndexFundContract.bind(indexFundAddress)
+
+	//Mint situation
+	if(event.params.from.toHexString() === Address.zero().toHexString()) {
+		updateInvestorIndexFundBalance(event.transaction.from, indexFundAddress, indexFundContract)
+		return
+	}
+	//Burn situation
+	if(event.params.to.toHexString() === Address.zero().toHexString()) {
+		updateInvestorIndexFundBalance(event.transaction.from, indexFundAddress, indexFundContract)
+		return;
+	}
+	//Transfer tokens
+	updateInvestorIndexFundBalance(event.params.from, indexFundAddress, indexFundContract)
+	updateInvestorIndexFundBalance(event.params.to, indexFundAddress, indexFundContract)
 }

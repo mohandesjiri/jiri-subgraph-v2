@@ -47,6 +47,7 @@ dataSources:
         - BalancedRedeemed
         - Invested
         - Redeemed
+        - Transfer
       abis:
         - name: ERC20
           file: IndexFund/abis/ERC20.json
@@ -61,4 +62,6 @@ dataSources:
           handler: handleInvested
         - event: Redeemed(uint256,address,uint256,int256,uint256)
           handler: handleRedeemed
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
       file: IndexFund/IndexFund.wasm
