@@ -151,12 +151,12 @@ export function handleTransfer(event: Transfer) : void {
 	const indexFundContract = IndexFundContract.bind(indexFundAddress)
 
 	//Mint situation
-	if(event.params.from.toHexString() === Address.zero().toHexString()) {
+	if(event.params.from.toHexString() == Address.zero().toHexString()) {
 		updateInvestorIndexFundBalance(event.transaction.from, indexFundAddress, indexFundContract)
 		return
 	}
 	//Burn situation
-	if(event.params.to.toHexString() === Address.zero().toHexString()) {
+	if(event.params.to.toHexString() == Address.zero().toHexString()) {
 		updateInvestorIndexFundBalance(event.transaction.from, indexFundAddress, indexFundContract)
 		return;
 	}

@@ -50,7 +50,7 @@ export function updateIndexFundInfo(contractAddress: Address, contract: IndexFun
 			indexFundAssetEntity.indexFund = indexFundId
 		} else if(indexFundAssetEntity.index !== i) {
 			indexFundAssetEntity.index = i;
-			log.warning('Found corruption in index fund assets order... $indexFund', [indexFundId])
+			log.warning('Found corruption in index fund assets order... {}', [indexFundId])
 		}
 		const tokenContract = ERC20.bind(asset)
 		indexFundAssetEntity.amount = tokenContract.balanceOf(contractAddress)
@@ -102,15 +102,13 @@ export function increaseHistoryRecordsCount(contractAddress: Address): void {
 
 export function updateInvestorIndexFundBalance(investorAddress: Address, indexFundAddress: Address, indexFundContract: IndexFundContract ) : void {
 	//Ignore transferFrom
-	if(indexFundAddress.toHexString() === investorAddress.toHexString()) {
+	if(indexFundAddress.toHexString() == investorAddress.toHexString()) {
 		return
 	}
 
-	if(investorAddress.toHexString() === Address.zero().toHexString() ) {
+	if(investorAddress.toHexString() == Address.zero().toHexString() ) {
 		return
 	}
-
-	log.warning('indexFund address: $indexFundAddress -- investor address: $investorAddress -- address zero: $addressZero', [indexFundAddress.toHexString(), investorAddress.toHexString(), Address.zero().toHexString()])
 	const investorIndexFundBalanceId = getInvestorFundBalanceId(investorAddress, indexFundAddress)
 	let investorIndexFundBalanceEntity = InvestorIndexFund.load(investorIndexFundBalanceId)
 	if(!investorIndexFundBalanceEntity) {
